@@ -9,9 +9,9 @@ Doc: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 <details><summary>Solution</summary>
 <p>
 
-If you don't have cluster nodes yet, check the terraform deployment from below: [Provision underlying infrastructure to deploy a Kubernetes cluster](https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.27/cluster-architecture-installation-configuration.md#provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster)
+If you don't have cluster nodes yet, check the terraform deployment from below: [Provision underlying infrastructure to deploy a Kubernetes cluster](https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.30/cluster-architecture-installation-configuration.md#provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster)
 
-Installation from [scratch](https://github.com/kelseyhightower/kubernetes-the-hard-way/) is too time consuming. We will be using KubeADM (v1.27) to install the Kubernetes cluster.
+Installation from [scratch](https://github.com/kelseyhightower/kubernetes-the-hard-way/) is too time-consuming. We will be using KubeADM (v1.30) to install the Kubernetes cluster.
 
 ### Install container runtime
 
@@ -20,7 +20,7 @@ Installation from [scratch](https://github.com/kelseyhightower/kubernetes-the-ha
 
 Doc: https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 
-Do this on all three nodes (here is the path to the script https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.27/containerd-install.sh):
+Do this on all three nodes (here is the path to the script https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.30/containerd-install.sh):
 
 ```bash
 # containerd preinstall configuration
@@ -90,11 +90,11 @@ Do this on all three nodes:
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl
 
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 sudo apt-get update
-sudo apt-get install -y kubelet=1.27.5-1.1 kubeadm=1.27.5-1.1 kubectl=1.27.5-1.1
+sudo apt-get install -y kubelet=1.30.4-1.1 kubeadm=1.30.4-1.1 kubectl=1.30.4-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
@@ -112,7 +112,7 @@ Make sure the nodes have different hostnames.
 
 On controlplane node:
 ```bash
-sudo kubeadm init --kubernetes-version=1.27.5 --pod-network-cidr=10.244.0.0/16
+sudo kubeadm init --kubernetes-version=1.30.4 --pod-network-cidr=10.244.0.0/16
 ```
 
 Run the output of the init command on the other nodes:
@@ -143,9 +143,9 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 ```bash
 kubectl get nodes
 NAME               STATUS   ROLES           AGE     VERSION
-k8s-controlplane   Ready    control-plane   3m29s   v1.27.5
-k8s-node-1         Ready    <none>          114s    v1.27.5
-k8s-node-2         Ready    <none>          77s     v1.27.5
+k8s-controlplane   Ready    control-plane   3m29s   v1.30.4
+k8s-node-1         Ready    <none>          114s    v1.30.4
+k8s-node-2         Ready    <none>          77s     v1.30.4
 ```
 
 </p>
@@ -161,7 +161,7 @@ k8s-node-2         Ready    <none>          77s     v1.27.5
 
 Doc: https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 
-After installing Kubernetes v1.27 here: [install](https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.27/cluster-architecture-installation-configuration.md#use-kubeadm-to-install-a-basic-cluster)
+After installing Kubernetes v1.30 here: [install](https://github.com/alijahnas/CKA-practice-exercises/blob/CKA-v1.30/cluster-architecture-installation-configuration.md#use-kubeadm-to-install-a-basic-cluster)
 
 We will now upgrade the cluster to v1.28.
 
@@ -239,12 +239,12 @@ k8s-node-2         Ready,SchedulingDisabled   <none>          13m   v1.28.1
 <details><summary>Solution</summary>
 <p>
 
-When having a one controlplane node in you cluster, you cannot upgrade the OS system (with reboot) without loosing temporarily access to your cluster.
+When only having only one control plane node in your cluster, you cannot upgrade the OS system (with reboot) without losing temporary access to your cluster.
 
 Here we will upgrade our worker nodes:
 
 ```bash
-# Hold kubernetes from upgrading
+# Hold Kubernetes from upgrading
 sudo apt-mark hold kubeadm kubelet kubectl
 
 # Upgrade node
@@ -268,7 +268,7 @@ kubectl uncordon k8s-node-1
 
 You can use any cloud provider (AWS, Azure, GCP, OpenStack, etc.) and multiple tools to provision nodes for your Kubernetes cluster.
 
-We will deploy a three node cluster, with one control plane node and two worker nodes.
+We will deploy a three-node cluster, with one control plane node and two worker nodes.
 
 Three Libvirt/KVM nodes (or any cloud provider you are using):
 - k8s-controlplane: 2 vCPUs, 4GB RAM, 40GB Disk, 172.16.1.11/24
@@ -286,12 +286,12 @@ Release:	22.04
 Codename:	jammy
 ```
 
-We will use a local libvirt/KVM baremetal node with terraform (v1.2.5) to provision the three node cluster described above.
+We will use a local libvirt/KVM baremetal node with terraform (v1.2.5) to provision the three-node cluster described above.
 
 ```bash
 mkdir terraform
 cd terraform
-wget https://raw.githubusercontent.com/alijahnas/CKA-practice-exercises/CKA-v1.27/terraform/cluster-infra.tf
+wget https://raw.githubusercontent.com/murasaki718/CKA-practice-exercises/CKA-v1.30/terraform/cluster-infra.tf
 terraform init
 terraform plan
 terraform apply
@@ -312,11 +312,11 @@ terraform apply
 
 Doc: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster
 
-Check the version of your etcd cluster depending on how you installed it.
+Check the version of your etcd cluster, which depends on how you installed it.
 
 ```bash
 kubectl exec -it -n kube-system etcd-k8s-controlplane -- etcd --version
-etcd Version: 3.5.3
+etcd Version: 3.5.15
 Git SHA: 0452feec7
 Go Version: go1.16.15
 Go OS/Arch: linux/amd64
@@ -324,10 +324,10 @@ Go OS/Arch: linux/amd64
 
 ```bash
 # Download etcd client
-wget https://github.com/etcd-io/etcd/releases/download/v3.5.3/etcd-v3.5.3-linux-amd64.tar.gz
-tar xzvf etcd-v3.5.3-linux-amd64.tar.gz
-sudo mv etcd-v3.5.3-linux-amd64/etcdctl /usr/local/bin
-sudo mv etcd-v3.5.3-linux-amd64/etcdutl /usr/local/bin
+wget https://github.com/etcd-io/etcd/releases/download/v3.5.15/etcd-v3.5.15-linux-amd64.tar.gz
+tar xzvf etcd-v3.5.15-linux-amd64.tar.gz
+sudo mv etcd-v3.5.15-linux-amd64/etcdctl /usr/local/bin
+sudo mv etcd-v3.5.15-linux-amd64/etcdutl /usr/local/bin
 
 # save etcd snapshot
 sudo etcdctl snapshot save --endpoints 172.16.1.11:2379 snapshot.db --cacert /etc/kubernetes/pki/etcd/server.crt --cert /etc/kubernetes/pki/etcd/ca.crt --key /etc/kubernetes/pki/etcd/ca.key
