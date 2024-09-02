@@ -3,6 +3,7 @@
 ## Evaluate cluster and node logging
 
 Questions:
+
 - Get cluster components logs.
 
 <details><summary>Solution</summary>
@@ -32,15 +33,17 @@ kubectl -n kube-system logs kube-scheduler-k8s-controller
 
 ## Understand how to monitor applications
 
-Doc: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+Doc: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/>
 
 Questions:
+
 - Create an nginx pod with a liveness and a readiness probe for the port 80.
 
 <details><summary>Solution</summary>
 <p>
 
 pod-ness.yaml:
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -79,9 +82,10 @@ kubectl describe pods nginx
 
 ### Understand how to monitor all cluster components
 
-Doc: https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/
+Doc: <https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/>
 
 Questions:
+
 - Install the metrics server and show metrics for nodes and for pods in `kube-system` namespace.
 
 <details><summary>Solution</summary>
@@ -136,9 +140,10 @@ metrics-server-ffc48cc6c-g92v8             6m           16Mi
 
 ## Manage container stdout & stderr logs
 
-Doc: https://kubernetes.io/docs/concepts/cluster-administration/logging/
+Doc: <https://kubernetes.io/docs/concepts/cluster-administration/logging/>
 
 Questions:
+
 - Get logs from the nginx pod deployed earlier and redirect them to a file.
 
 <details><summary>Solution</summary>
@@ -153,9 +158,10 @@ kubectl logs nginx > nginx.log
 
 ## Troubleshoot application failure
 
-Doc: https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/
+Doc: <https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/>
 
 Questions:
+
 - Launch a pod with a busybox container that launches with the `sheep 3600` command (this command doesn't exist.
 - Get the logs from the pod, then correct the error to make it launch `sleep 3600`.
 
@@ -163,6 +169,7 @@ Questions:
 <p>
 
 podfail.yaml:
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -202,9 +209,10 @@ Normal  Started    4s    kubelet            Started container podfail #Not faili
 
 ### Troubleshoot control plane failure
 
-Doc: https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
+Doc: <https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/>
 
 Questions:
+
 - Get logs from the control plane in the `kube-system` namespace.
 
 <details><summary>Solution</summary>
@@ -226,9 +234,10 @@ kubectl -n kube-system logs kube-scheduler-k8s-controller
 
 ### Troubleshoot worker node failure
 
-Doc: https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
+Doc: <https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/>
 
 Questions:
+
 - Check the node status and the system logs for kubelet on the failing node.
 
 <details><summary>Solution</summary>
@@ -246,9 +255,10 @@ sudo journalctl -u kubelet | grep -i error
 
 ## Troubleshoot networking
 
-Doc: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+Doc: <https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/>
 
 Questions:
+
 - Check the `kube-dns` service running in the `kube-system` namespace and check the endpoints behind the service. Check the pods that serve the endpoints.
 
 <details><summary>Solution</summary>
