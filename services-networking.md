@@ -50,7 +50,7 @@ nginx-55649fd747-6xvlq   1/1     Running   0          35s   10.244.2.26   k8s-no
 nginx-55649fd747-vnbjz   1/1     Running   0          35s   10.244.1.27   k8s-node-1   <none>           <none>
 
 # We are getting the page through IP address of the controlplane node and the port allocated by the NodePort service
-curl http://172.16.1.11:32740
+curl http://192.168.254.11:32740
 ...
 <h1>Welcome to nginx!</h1>
 <p>If you see this page, the nginx web server is successfully installed and
@@ -90,7 +90,7 @@ ipvs:
 ## Download and install MetalLB
 mkdir metallb
 cd metallb
-wget https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
+wget https://raw.githubusercontent.com/metallb/metallb/v0.14.18/config/manifests/metallb-native.yaml
 
 # We are giving MetalLB an IP range from our cluster infra to allocate from
 cat << EOF > metallb-config.yaml
@@ -101,7 +101,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 172.16.1.101-172.16.1.150
+  - 192.168.254.101-192.168.254.150
 
 ---
 apiVersion: metallb.io/v1beta1
@@ -130,7 +130,7 @@ IP Family Policy:         SingleStack
 IP Families:              IPv4
 IP:                       10.104.174.166
 IPs:                      10.104.174.166
-LoadBalancer Ingress:     172.16.1.101
+LoadBalancer Ingress:     192.168.254.101
 Port:                     <unset>  80/TCP
 TargetPort:               80/TCP
 NodePort:                 <unset>  31264/TCP
@@ -140,11 +140,11 @@ External Traffic Policy:  Cluster
 Events:
   Type    Reason        Age   From                Message
   ----    ------        ----  ----                -------
-  Normal  IPAllocated   27s   metallb-controller  Assigned IP ["172.16.1.101"]
+  Normal  IPAllocated   27s   metallb-controller  Assigned IP ["192.168.254.101"]
   Normal  nodeAssigned  27s   metallb-speaker     announcing from node "k8s-node-1" with protocol "layer2"
 
 # We are getting the page through the IP address allocated by MetalLB from the pool we provided
-curl http://172.16.1.101:80
+curl http://192.168.254.101:80
 ...
 <h1>Welcome to nginx!</h1>
 <p>If you see this page, the nginx web server is successfully installed and
@@ -184,7 +184,7 @@ IP Family Policy:         SingleStack
 IP Families:              IPv4
 IP:                       10.101.245.9
 IPs:                      10.101.245.9
-LoadBalancer Ingress:     172.16.1.101
+LoadBalancer Ingress:     192.168.254.101
 Port:                     <unset>  8080/TCP
 TargetPort:               8080/TCP
 NodePort:                 <unset>  30174/TCP
@@ -194,10 +194,10 @@ External Traffic Policy:  Cluster
 Events:
   Type    Reason        Age              From                Message
   ----    ------        ----             ----                -------
-  Normal  IPAllocated   4s               metallb-controller  Assigned IP "172.16.1.101"
+  Normal  IPAllocated   4s               metallb-controller  Assigned IP "192.168.254.101"
   Normal  nodeAssigned  3s (x2 over 3s)  metallb-speaker     announcing from node "k8s-node-1"
 
-curl http://172.16.1.101:8080
+curl http://192.168.254.101:8080
 <html><body><h1>It works!</h1></body></html>
 ```
 
@@ -238,7 +238,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 kubectl -n ingress-nginx get svc
 NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
-ingress-nginx-controller             LoadBalancer   10.102.124.243   172.16.1.102   80:30249/TCP,443:31876/TCP   13s
+ingress-nginx-controller             LoadBalancer   10.102.124.243   192.168.254.102   80:30249/TCP,443:31876/TCP   13s
 ingress-nginx-controller-admission   ClusterIP      10.98.20.7       <none>         443/TCP                      13s
 ```
 
@@ -247,7 +247,7 @@ Deploy web-ingress.yaml:
 Name:             web-ingress
 Labels:           <none>
 Namespace:        default
-Address:          172.16.1.102
+Address:          192.168.254.102
 Ingress Class:    nginx
 Default backend:  <default>
 Rules:

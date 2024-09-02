@@ -97,7 +97,7 @@ resource "libvirt_network" "kube_network" {
   name      = "k8snet"
   mode      = "nat"
   domain    = "k8s.local"
-  addresses = ["172.16.1.0/24"]
+  addresses = ["192.168.254.0/24"]
   dns {
     enabled = true
   }
@@ -113,7 +113,7 @@ resource "libvirt_domain" "k8s-controlplane" {
   network_interface {
     network_id     = libvirt_network.kube_network.id
     hostname       = "k8s-controlplane"
-    addresses      = ["172.16.1.11"]
+    addresses      = ["192.168.254.11"]
     wait_for_lease = true
   }
 
@@ -159,7 +159,7 @@ resource "libvirt_domain" "k8s-node-1" {
   network_interface {
     network_id     = libvirt_network.kube_network.id
     hostname       = "k8s-node-1"
-    addresses      = ["172.16.1.21"]
+    addresses      = ["192.168.254.21"]
     wait_for_lease = true
   }
 
@@ -205,7 +205,7 @@ resource "libvirt_domain" "k8s-node-2" {
   network_interface {
     network_id     = libvirt_network.kube_network.id
     hostname       = "k8s-node-2"
-    addresses      = ["172.16.1.22"]
+    addresses      = ["192.168.254.22"]
     wait_for_lease = true
   }
 
