@@ -22,8 +22,6 @@ done < machines.txt
 sudo cat hosts >> /etc/hosts
 
 # setup ssh access
-su - root
-
 sed -i \
   's/^#PermitRootLogin.*/PermitRootLogin yes/' \
   /etc/ssh/sshd_config
