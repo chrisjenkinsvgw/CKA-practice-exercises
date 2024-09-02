@@ -17,13 +17,13 @@ For our deployment done in [Cluster Architecture, Installation & Configuration](
 sudo journalctl -u kubelet
 
 # API server
-kubectl -n kube-system logs kube-apiserver-k8s-control-plane
+kubectl -n kube-system logs kube-apiserver-k8s-controller
 
 # Controller Manager
-kubectl -n kube-system logs kube-controller-manager-k8s-control-plane
+kubectl -n kube-system logs kube-controller-manager-k8s-controller
 
 # Scheduler
-kubectl -n kube-system logs kube-scheduler-k8s-control-plane
+kubectl -n kube-system logs kube-scheduler-k8s-controller
 
 ```
 
@@ -110,7 +110,7 @@ kubectl apply -k metrics-server/manifests/base/
 # Wait for the server to get metrics and show them
 kubectl top nodes
 NAME               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-k8s-control-plane   271m         13%    1075Mi          28%
+k8s-controller   271m         13%    1075Mi          28%
 k8s-node-1         115m         5%     636Mi           33%
 k8s-node-2         97m          4%     564Mi           29%
 
@@ -118,16 +118,16 @@ kubectl top pods -n kube-system
 NAME                                       CPU(cores)   MEMORY(bytes)
 coredns-558bd4d5db-6cdkr                   6m           11Mi
 coredns-558bd4d5db-k9qxs                   5m           19Mi
-etcd-k8s-control-plane                      27m          71Mi
-kube-apiserver-k8s-control-plane            112m         312Mi
-kube-controller-manager-k8s-control-plane   34m          56Mi
+etcd-k8s-controller                      27m          71Mi
+kube-apiserver-k8s-controller            112m         312Mi
+kube-controller-manager-k8s-controller   34m          56Mi
 kube-flannel-ds-nr5ms                      4m           11Mi
 kube-flannel-ds-vl79c                      5m           13Mi
 kube-flannel-ds-xvp8z                      7m           14Mi
 kube-proxy-jjvc9                           2m           20Mi
 kube-proxy-mwwnn                           1m           17Mi
 kube-proxy-wr4v7                           1m           21Mi
-kube-scheduler-k8s-control-plane            8m           18Mi
+kube-scheduler-k8s-controller            8m           18Mi
 metrics-server-ffc48cc6c-g92v8             6m           16Mi
 ```
 
@@ -212,13 +212,13 @@ Questions:
 
 ```bash
 # API server
-kubectl -n kube-system logs kube-apiserver-k8s-control-plane
+kubectl -n kube-system logs kube-apiserver-k8s-controller
 
 # Controller Manager
-kubectl -n kube-system logs kube-controller-manager-k8s-control-plane
+kubectl -n kube-system logs kube-controller-manager-k8s-controller
 
 # Scheduler
-kubectl -n kube-system logs kube-scheduler-k8s-control-plane
+kubectl -n kube-system logs kube-scheduler-k8s-controller
 ```
 
 </p>

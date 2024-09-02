@@ -5,7 +5,7 @@ apt-get update && apt-get upgrade
 apt-get install -y sudo vim
 
 cat <<EOF > machines.txt
-192.168.122.206 k8s-control-plane.kubernetes.local k8s-control-plane
+192.168.122.206 k8s-controller.kubernetes.local k8s-controller
 192.168.122.173 k8s-node1.kubernetes.local k8s-node1 10.200.0.0/24
 192.168.122.197 k8s-node2.kubernetes.local k8s-node2 10.200.1.0/24
 EOF

@@ -146,7 +146,7 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/
 ```bash
 kubectl get nodes
 NAME               STATUS   ROLES           AGE     VERSION
-k8s-control-plane   Ready    control-plane   3m29s   v1.30.4
+k8s-controller   Ready    control-plane   3m29s   v1.30.4
 k8s-node-1          Ready    <none>          114s    v1.30.4
 k8s-node-2          Ready    <none>          77s     v1.30.4
 ```
@@ -180,7 +180,7 @@ sudo apt-get update && sudo apt-get install -y kubeadm=1.31.0-1.1
 sudo apt-mark hold kubeadm
 
 # Upgrade control-plane node
-kubectl drain k8s-control-plane --ignore-daemonsets
+kubectl drain k8s-controller --ignore-daemonsets
 sudo kubeadm upgrade plan
 sudo kubeadm upgrade apply v1.31.0
 
@@ -200,7 +200,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 
 # Make control-plane node reschedulable
-kubectl uncordon k8s-control-plane
+kubectl uncordon k8s-controller
 ```
 
 On worker nodes:
@@ -234,7 +234,7 @@ Verify that the nodes are upgraded to v1.31.0:
 ```bash
 kubectl get nodes
 NAME               STATUS                     ROLES           AGE   VERSION
-k8s-control-plane   Ready                      control-plane   15m   v1.31.0
+k8s-controller   Ready                      control-plane   15m   v1.31.0
 k8s-node-1         Ready,SchedulingDisabled   <none>          13m   v1.31.0
 k8s-node-2         Ready,SchedulingDisabled   <none>          13m   v1.31.0
 ```
@@ -279,7 +279,7 @@ You can use any cloud provider (AWS, Azure, GCP, OpenStack, etc.) and multiple t
 We will deploy a three-node cluster, with one control plane node and two worker nodes.
 
 Three Libvirt/KVM nodes (or any cloud provider you are using):
-- k8s-control-plane: 2 vCPUs, 4GB RAM, 20GB Disk, 192.168.254.11/24
+- k8s-controller: 2 vCPUs, 4GB RAM, 20GB Disk, 192.168.254.11/24
 - k8s-node-1:        2 vCPUs, 2GB RAM, 20GB Disk, 192.168.254.21/24
 - k8s-node-2:        2 vCPUs, 2GB RAM, 20GB Disk, 192.168.254.22/24
 
@@ -323,7 +323,7 @@ Doc: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
 Check the version of your etcd cluster, which depends on how you installed it.
 
 ```bash
-kubectl exec -it -n kube-system etcd-k8s-control-plane -- etcd --version
+kubectl exec -it -n kube-system etcd-k8s-controller -- etcd --version
 etcd Version: 3.5.15
 Git SHA: 0452feec7
 Go Version: go1.16.15
