@@ -49,7 +49,7 @@ NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE  
 nginx-55649fd747-6xvlq   1/1     Running   0          35s   10.244.2.26   k8s-node-2   <none>           <none>
 nginx-55649fd747-vnbjz   1/1     Running   0          35s   10.244.1.27   k8s-node-1   <none>           <none>
 
-# We are getting the page through IP address of the controlplane node and the port allocated by the NodePort service
+# We are getting the page through IP address of the control-plane node and the port allocated by the NodePort service
 curl http://192.168.254.11:32740
 ...
 <h1>Welcome to nginx!</h1>

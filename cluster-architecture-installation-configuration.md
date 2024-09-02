@@ -168,7 +168,7 @@ After installing Kubernetes v1.30 here: [install](https://github.com/murasaki718
 
 We will now upgrade the cluster to v1.31.
 
-On controlplane node:
+On control-plane node:
 
 ```bash
 # Add 1.31 repository
@@ -179,8 +179,8 @@ sudo apt-mark unhold kubeadm
 sudo apt-get update && sudo apt-get install -y kubeadm=1.31.0-1.1
 sudo apt-mark hold kubeadm
 
-# Upgrade controlplane node
-kubectl drain k8s-controlplane --ignore-daemonsets
+# Upgrade control-plane node
+kubectl drain k8s-control-plane --ignore-daemonsets
 sudo kubeadm upgrade plan
 sudo kubeadm upgrade apply v1.31.0
 
@@ -199,8 +199,8 @@ sudo apt-mark hold kubelet kubectl
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 
-# Make controlplane node reschedulable
-kubectl uncordon k8s-controlplane
+# Make control-plane node reschedulable
+kubectl uncordon k8s-control-plane
 ```
 
 On worker nodes:
@@ -234,7 +234,7 @@ Verify that the nodes are upgraded to v1.31.0:
 ```bash
 kubectl get nodes
 NAME               STATUS                     ROLES           AGE   VERSION
-k8s-controlplane   Ready                      control-plane   15m   v1.31.0
+k8s-control-plane   Ready                      control-plane   15m   v1.31.0
 k8s-node-1         Ready,SchedulingDisabled   <none>          13m   v1.31.0
 k8s-node-2         Ready,SchedulingDisabled   <none>          13m   v1.31.0
 ```
@@ -323,7 +323,7 @@ Doc: https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
 Check the version of your etcd cluster, which depends on how you installed it.
 
 ```bash
-kubectl exec -it -n kube-system etcd-k8s-controlplane -- etcd --version
+kubectl exec -it -n kube-system etcd-k8s-control-plane -- etcd --version
 etcd Version: 3.5.15
 Git SHA: 0452feec7
 Go Version: go1.16.15

@@ -26,8 +26,8 @@ resource "libvirt_volume" "ubuntu_22_04_resized" {
   count          = 3
 }
 
-resource "libvirt_cloudinit_disk" "cloudinit_k8s_controlplane" {
-  name = "cloudinit_ubuntu_k8s_controlplane.iso"
+resource "libvirt_cloudinit_disk" "cloudinit_k8s_control-plane" {
+  name = "cloudinit_ubuntu_k8s_control-plane.iso"
   pool = "default"
 
   user_data = <<EOF
@@ -43,8 +43,8 @@ users:
 growpart:
   mode: auto
   devices: ['/']
-hostname: k8s-controlplane
-fqdn: k8s-controlplane.k8s.local
+hostname: k8s-control-plane
+fqdn: k8s-control-plane.k8s.local
 EOF
 }
 
@@ -103,16 +103,16 @@ resource "libvirt_network" "kube_network" {
   }
 }
 
-resource "libvirt_domain" "k8s-controlplane" {
-  name   = "k8s-controlplane"
+resource "libvirt_domain" "k8s-control-plane" {
+  name   = "k8s-control-plane"
   memory = "4096"
   vcpu   = 2
 
-  cloudinit = libvirt_cloudinit_disk.cloudinit_k8s_controlplane.id
+  cloudinit = libvirt_cloudinit_disk.cloudinit_k8s_control-plane.id
 
   network_interface {
     network_id     = libvirt_network.kube_network.id
-    hostname       = "k8s-controlplane"
+    hostname       = "k8s-control-plane"
     addresses      = ["192.168.254.11"]
     wait_for_lease = true
   }
@@ -141,12 +141,12 @@ resource "libvirt_domain" "k8s-controlplane" {
   }
 
   provisioner "remote-exec" {
-    inline = ["sudo sed -i 's/localhost/k8s-controlplane/' /etc/hosts"]
+    inline = ["sudo sed -i 's/localhost/k8s-control-plane/' /etc/hosts"]
   }
 }
 
-output "ip-controlplane" {
-  value = libvirt_domain.k8s-controlplane.network_interface[0].addresses[0]
+output "ip-control-plane" {
+  value = libvirt_domain.k8s-control-plane.network_interface[0].addresses[0]
 }
 
 resource "libvirt_domain" "k8s-node-1" {

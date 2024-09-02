@@ -547,7 +547,7 @@ daemontest-qc6sb   1/1     Running   0          14s   10.244.2.22   k8s-node-2  
 daemontest-st9wn   1/1     Running   0          14s   10.244.1.23   k8s-node-1   <none>           <none>
 ```
 
-If you want the daemonset to run on the controlplane node, it needs to tolerate the controlnode taints, for example node-role.kubernetes.io/master:NoSchedule and node-role.kubernetes.io/control-plane:NoSchedule.
+If you want the daemonset to run on the control-plane node, it needs to tolerate the controlnode taints, for example node-role.kubernetes.io/master:NoSchedule and node-role.kubernetes.io/control-plane:NoSchedule.
 
 </p>
 </details>
