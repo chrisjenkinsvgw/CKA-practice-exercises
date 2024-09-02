@@ -2,6 +2,34 @@
 
 # initial system update and upgrade
 apt-get update && apt-get upgrade
+apt-get install -y sudo vim
+
+cat <<EOF > machines.txt
+192.168.122.206 k8s-control-plane.kubernetes.local k8s-control-plane
+192.168.122.173 k8s-node1.kubernetes.local k8s-node1 10.200.0.0/24
+192.168.122.197 k8s-node2.kubernetes.local k8s-node2 10.200.1.0/24
+EOF
+
+# set dns hosts file
+echo "" > hosts
+echo "# Kubernetes The Hard Way" >> hosts
+
+while read IP FQDN HOST SUBNET; do 
+    ENTRY="${IP} ${FQDN} ${HOST}"
+    echo $ENTRY >> hosts
+done < machines.txt
+
+sudo cat hosts >> /etc/hosts
+
+# setup ssh access
+su - root
+
+sed -i \
+  's/^#PermitRootLogin.*/PermitRootLogin yes/' \
+  /etc/ssh/sshd_config
+
+systemctl restart sshd
+
 
 # disabled swap file
 swapoff -a
