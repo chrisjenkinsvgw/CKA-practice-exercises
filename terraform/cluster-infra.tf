@@ -26,8 +26,8 @@ resource "libvirt_volume" "ubuntu_22_04_resized" {
   count          = 3
 }
 
-resource "libvirt_cloudinit_disk" "cloudinit_k8s_control-plane" {
-  name = "cloudinit_ubuntu_k8s_control-plane.iso"
+resource "libvirt_cloudinit_disk" "cloudinit_k8s_control_plane" {
+  name = "cloudinit_ubuntu_k8s_control_plane.iso"
   pool = "default"
 
   user_data = <<EOF
@@ -39,7 +39,7 @@ users:
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh-authorized-keys:
-      - ${file("~/.ssh/sol.key.pub")}
+      - ${file("~/.ssh/id_ed25519.pub")}
 growpart:
   mode: auto
   devices: ['/']
@@ -61,7 +61,7 @@ users:
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh-authorized-keys:
-      - ${file("~/.ssh/sol.key.pub")}
+      - ${file("~/.ssh/id_ed25519.pub")}
 growpart:
   mode: auto
   devices: ['/']
@@ -83,7 +83,7 @@ users:
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh-authorized-keys:
-      - ${file("~/.ssh/sol.key.pub")}
+      - ${file("~/.ssh/id_ed25519.pub")}
 growpart:
   mode: auto
   devices: ['/']
@@ -103,12 +103,12 @@ resource "libvirt_network" "kube_network" {
   }
 }
 
-resource "libvirt_domain" "k8s-control-plane" {
+resource "libvirt_domain" "k8s_control_plane" {
   name   = "k8s-control-plane"
   memory = "4096"
   vcpu   = 2
 
-  cloudinit = libvirt_cloudinit_disk.cloudinit_k8s_control-plane.id
+  cloudinit = libvirt_cloudinit_disk.cloudinit_k8s_control_plane.id
 
   network_interface {
     network_id     = libvirt_network.kube_network.id
@@ -137,7 +137,7 @@ resource "libvirt_domain" "k8s-control-plane" {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.network_interface[0].addresses[0]
-    private_key = "${file("~/.ssh/sol.key")}"
+    private_key = "${file("~/.ssh/id_ed25519")}"
   }
 
   provisioner "remote-exec" {
@@ -145,11 +145,11 @@ resource "libvirt_domain" "k8s-control-plane" {
   }
 }
 
-output "ip-control-plane" {
-  value = libvirt_domain.k8s-control-plane.network_interface[0].addresses[0]
+output "ip_control_plane" {
+  value = libvirt_domain.k8s_control_plane.network_interface[0].addresses[0]
 }
 
-resource "libvirt_domain" "k8s-node-1" {
+resource "libvirt_domain" "k8s_node_1" {
   name   = "k8s-node-1"
   memory = "2048"
   vcpu   = 2
@@ -183,7 +183,7 @@ resource "libvirt_domain" "k8s-node-1" {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.network_interface[0].addresses[0]
-    private_key = "${file("~/.ssh/sol.key")}"
+    private_key = "${file("~/.ssh/id_ed25519")}"
   }
 
   provisioner "remote-exec" {
@@ -191,11 +191,11 @@ resource "libvirt_domain" "k8s-node-1" {
   }
 }
 
-output "ip-node-1" {
-  value = libvirt_domain.k8s-node-1.network_interface[0].addresses[0]
+output "ip_node_1" {
+  value = libvirt_domain.k8s_node_1.network_interface[0].addresses[0]
 }
 
-resource "libvirt_domain" "k8s-node-2" {
+resource "libvirt_domain" "k8s_node_2" {
   name   = "k8s-node-2"
   memory = "2048"
   vcpu   = 2
@@ -229,7 +229,7 @@ resource "libvirt_domain" "k8s-node-2" {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.network_interface[0].addresses[0]
-    private_key = "${file("~/.ssh/sol.key")}"
+    private_key = "${file("~/.ssh/id_ed25519")}"
   }
 
   provisioner "remote-exec" {
@@ -237,8 +237,8 @@ resource "libvirt_domain" "k8s-node-2" {
   }
 }
 
-output "ip-node-2" {
-  value = libvirt_domain.k8s-node-2.network_interface[0].addresses[0]
+output "ip_node_2" {
+  value = libvirt_domain.k8s_node_2.network_interface[0].addresses[0]
 }
 
 terraform {
