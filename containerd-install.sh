@@ -22,7 +22,7 @@ done < machines.txt
 sudo cat hosts >> /etc/hosts
 
 # setup ssh access
-sed -i \
+sudo sed -i \
   's/^#PermitRootLogin.*/PermitRootLogin yes/' \
   /etc/ssh/sshd_config
 
@@ -33,7 +33,7 @@ systemctl restart sshd
 swapoff -a
 
 # make changes in /etc/fstab to persist disabling of Swap on reboot
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 # containerd preinstall configuration
 cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
@@ -61,13 +61,12 @@ sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
 
 ## Install packages
-sudo apt-get update
-sudo apt-get install -y containerd
+sudo apt-get update && sudo apt-get install -y containerd
 
 # Configure containerd
 sudo mkdir -p /etc/containerd
-containerd config default | sudo tee /etc/containerd/config.toml
-sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
 
 # Restart containerd
 sudo systemctl restart containerd
