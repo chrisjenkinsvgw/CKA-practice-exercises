@@ -26,7 +26,7 @@ sudo sed -i \
   's/^#PermitRootLogin.*/PermitRootLogin yes/' \
   /etc/ssh/sshd_config
 
-systemctl restart sshd
+sudo systemctl restart sshd
 
 
 # disabled swap file
